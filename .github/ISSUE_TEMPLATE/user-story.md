@@ -18,7 +18,7 @@ assignees: ''
 
 ### Acceptance Criteria
 
-**Scenario: [Genberal scenario title]**
+**Scenario: [General scenario title]**
 ```gherkin
 Given [some context]
 When [certain action is taken]
