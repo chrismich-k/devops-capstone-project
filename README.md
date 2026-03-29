@@ -3,11 +3,15 @@
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://opensource.org/licenses/Apache-2.0)
 [![Python 3.9](https://img.shields.io/badge/Python-3.9-green.svg)](https://shields.io/)
 
-This repository was started from the template [**IBM-CD0285EN-SkillsNetwork DevOps Capstone Project**](https://www.coursera.org/learn/devops-capstone-project?specialization=devops-and-software-engineering) which is part of the [**IBM DevOps and Software Engineering Professional Certificate**](https://www.coursera.org/professional-certificates/devops-and-software-engineering)
+This microservice provides a robust API for managing customer data within an e-commerce ecosystem. It was developed as the final **Capstone Project** for the [IBM DevOps and Software Engineering Professional Certificate](https://www.coursera.org/professional-certificates/devops-and-software-engineering).
 
-## Usage
+## Project Overview
+This project implements a **Cloud Native** Account Microservice. It provides a well-formed **REST API** to enable seamless integration with other microservices, focusing on scalability and test-driven development.
 
-In this Capstone project, many of the technologies and concepts practised in the preceding courses of the [**IBM Professional Curriculum**](https://www.coursera.org/professional-certificates/devops-and-software-engineering#courses) are used to build and deliver a fully functional **Customer Accounts microservice**.
+### Key Capabilities
+* **Full CRUD Operations:** Create, Read, Update, Delete, and List customer accounts.
+* **RESTful Architecture:** Standardized API endpoints for external service communication.
+* **Scalability:** Designed to be deployed as a standalone microservice in a distributed environment.
 
 ## Development Environment
 
@@ -88,44 +92,16 @@ The Account model contains the following fields:
 | phone_number | String(32) | True |
 | date_joined | Date | False |
 
-## Your Task
-
-Complete this microservice by implementing REST API's for `READ`, `UPDATE`, `DELETE`, and `LIST` while maintaining **95%** code coverage. In true **Test Driven Development** fashion, first write tests for the code you "wish you had", and then write the code to make them pass.
-
-## Local Kubernetes Development
-
-This repo can also be used for local Kubernetes development. It is not advised that you run these commands in the Cloud IDE environment. The purpose of these commands are to simulate the Cloud IDE environment locally on your computer. 
-
-At a minimum, you will need [Docker Desktop](https://www.docker.com/products/docker-desktop) installed on your computer. For the full development environment, you will also need [Visual Studio Code](https://code.visualstudio.com) with the [Remote Containers](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.remote-containers) extension from the Visual Studio Marketplace. All of these can be installed manually by clicking on the links above or you can use a package manager like **Homebrew** on Mac of **Chocolatey** on Windows.
-
-Please only use these commands for working stand-alone on your own computer with the VSCode Remote Container environment provided.
-
-1. Bring up a local K3D Kubernetes cluster
-
-    ```bash
-    $ make cluster
-    ```
-
-2. Install Tekton
-
-    ```bash
-    $ make tekton
-    ```
-
-3. Install the ClusterTasks that the Cloud IDE has
-
-    ```bash
-    $ make clustertasks
-    ```
-
-You can now perform Tekton development locally, just like in the Cloud IDE lab environment.
-
 ## Author
 
-[John Rofrano](https://www.coursera.org/instructor/johnrofrano), Senior Technical Staff Member, DevOps Champion, @ IBM Research, and Instructor @ Coursera
+**Christian Michael Keßler**, *Data Engineering, Full Stack Development & DevOps Engineering*
+
+## Acknowledgements
+
+Special Thanks to **[John Rofrano](https://www.coursera.org/instructor/johnrofrano)** (IBM Research, NYU) for his world-class instruction and for providing the initial project template. His insights into DevOps, TDD/BDD and Cloud Native Development were fundamental to this project.
 
 ## License
 
 Licensed under the Apache License. See [LICENSE](LICENSE)
 
-## <h3 align="center"> © IBM Corporation 2022. All rights reserved. <h3/>
+## <p align="center"> © IBM Corporation 2022. All rights reserved. <p/>
