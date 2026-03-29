@@ -18,6 +18,13 @@ assignees: ''
 
 ### Acceptance Criteria
 
+**Scenario: [Genberal scenario title]**
+```gherkin
+Given [some context]
+When [certain action is taken]
+Then [the outcome of action is observed]
+```
+
 **Scenario: [Success scenario title]**
 ```gherkin
 Given [some context or precondition]
