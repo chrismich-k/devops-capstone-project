@@ -8,6 +8,7 @@ Test cases can be run with the following:
 import os
 import logging
 import random
+from datetime import date
 from unittest import TestCase
 from tests.factories import AccountFactory
 from service.common import status  # HTTP Status Codes
@@ -151,3 +152,52 @@ class TestAccountService(TestCase):
         """It should fail to read a non-existing Account"""
         response = self.client.get(BASE_URL + "/123")
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_list_accounts(self):
+        """It should read the list of Accounts"""
+        # create 5 test accountss
+        account_objects = self._create_accounts(5)
+
+        # test to successfully read the list of accounts
+        response = self.client.get(
+            BASE_URL
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # test the data returned
+        data = response.get_json()
+        for account in data:
+            account_id = account["id"]
+            account_object = next(
+                (acc for acc in account_objects if acc.id == account_id),
+                None
+            )
+            self.assertNotEqual(account_object, None)
+
+            # test if the attributes match
+            self.assertEqual(account["id"], account_object.id)
+            self.assertEqual(account["name"], account_object.name)
+            self.assertEqual(account["email"], account_object.email)
+            self.assertEqual(account["address"], account_object.address)
+            self.assertEqual(
+                account["phone_number"],
+                account_object.phone_number
+            )
+            self.assertEqual(
+                date.fromisoformat(account["date_joined"]),
+                account_object.date_joined
+            )
+
+    def test_list_no_accounts(self):
+        """It should read the empty list of Accounts"""
+        # test to successfully read the empty list of accounts
+        response = self.client.get(
+            BASE_URL
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # check if a list is returned
+        self.assertIsInstance(response.get_json(), list)
+
+        # check if returned list is empty
+        self.assertEqual(len(response.get_json()), 0)
