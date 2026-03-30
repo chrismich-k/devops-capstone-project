@@ -7,6 +7,7 @@ Test cases can be run with the following:
 """
 import os
 import logging
+import random
 from unittest import TestCase
 from tests.factories import AccountFactory
 from service.common import status  # HTTP Status Codes
@@ -126,4 +127,27 @@ class TestAccountService(TestCase):
             status.HTTP_415_UNSUPPORTED_MEDIA_TYPE
         )
 
-    # ADD YOUR TEST CASES HERE ...
+    def test_read_an_account(self):
+        """It should read a single Account"""
+        # create 5 test accounts, select one
+        account = random.choice(self._create_accounts(5))
+
+        # test to successfully read the account
+        response = self.client.get(
+            BASE_URL + f"/{str(account.id)}"
+        )
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+        # test the data returned
+        data = response.get_json()
+        self.assertEqual(data["id"], account.id)
+        self.assertEqual(data["name"], account.name)
+        self.assertEqual(data["email"], account.email)
+        self.assertEqual(data["address"], account.address)
+        self.assertEqual(data["phone_number"], account.phone_number)
+        self.assertEqual(str(data["date_joined"]), str(account.date_joined))
+
+    def test_read_nonexisting_account(self):
+        """It should fail to read a non-existing Account"""
+        response = self.client.get(BASE_URL + "/123")
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
