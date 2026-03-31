@@ -214,7 +214,7 @@ class TestAccountService(TestCase):
         self.assertEqual(resp_original.status_code, status.HTTP_200_OK)
         data_original = resp_original.get_json()
 
-        # change the da, a in thsomeccoun and do the update
+        # change some of the data for the account and do the update
         data_changed = data_original.copy()
         data_changed["name"] = "Test Candidate"
         data_changed["email"] = "tester@mailtest.org"
