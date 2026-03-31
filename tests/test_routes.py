@@ -201,3 +201,66 @@ class TestAccountService(TestCase):
 
         # check if returned list is empty
         self.assertEqual(len(response.get_json()), 0)
+
+    def test_update_account(self):
+        """It should update an Account"""
+        # create 5 test accounts, select one
+        account = random.choice(self._create_accounts(5))
+
+        # read the account before the update
+        resp_original = self.client.get(
+            BASE_URL + f"/{str(account.id)}"
+        )
+        self.assertEqual(resp_original.status_code, status.HTTP_200_OK)
+        data_original = resp_original.get_json()
+
+        # change the da, a in thsomeccoun and do the update
+        data_changed = data_original.copy()
+        data_changed["name"] = "Test Candidate"
+        data_changed["email"] = "tester@mailtest.org"
+
+        resp_returned = self.client.put(
+            BASE_URL + f"/{str(data_changed['id'])}",
+            json=data_changed,
+            content_type="application/json"
+        )
+        self.assertEqual(resp_returned.status_code, status.HTTP_200_OK)
+        data_returned = resp_returned.get_json()
+
+        # compare the returned and the changed data
+        self.assertEqual(data_returned["name"], data_changed["name"])
+        self.assertEqual(data_returned["email"], data_changed["email"])
+        self.assertEqual(data_returned["address"], data_changed["address"])
+        self.assertEqual(
+            data_returned["phone_number"],
+            data_changed["phone_number"]
+        )
+        self.assertEqual(
+            date.fromisoformat(data_returned["date_joined"]),
+            date.fromisoformat(data_changed["date_joined"])
+        )
+
+        # compare the returned and the original data,
+        # these should be different:
+        self.assertNotEqual(data_returned["name"], data_original["name"])
+        self.assertNotEqual(data_returned["email"], data_original["email"])
+        
+        # these should be the same:
+        self.assertEqual(data_returned["address"], data_original["address"])
+        self.assertEqual(
+            data_returned["phone_number"],
+            data_original["phone_number"]
+        )
+        self.assertEqual(
+            date.fromisoformat(data_returned["date_joined"]),
+            date.fromisoformat(data_original["date_joined"])
+        )
+
+    def test_update_nonexisting_account(self):
+        """It should fail to update a non-existing Account"""
+        test_account = AccountFactory()
+        response = self.client.put(
+            BASE_URL + "/123",
+            json=test_account.serialize()
+        )
+        self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
