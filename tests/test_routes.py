@@ -10,8 +10,8 @@ import logging
 import random
 from datetime import date
 from unittest import TestCase
-from service import talisman
 from tests.factories import AccountFactory
+from service import talisman
 from service.common import status  # HTTP Status Codes
 from service.models import db, Account, init_db
 from service.routes import app
@@ -324,4 +324,13 @@ class TestAccountService(TestCase):
         for header, value in expected_headers.items():
             self.assertEqual(response.headers.get(header), value)
 
+    def test_cors_policies(self):
+        """It should have cors policies"""
+        response = self.client.get('/', environ_overrides=HTTPS_ENVIRON)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
 
+        # check for cors header
+        self.assertEqual(
+            response.headers.get('Access-Control-Allow-Origin'),
+            '*'
+        )
