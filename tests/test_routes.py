@@ -108,7 +108,10 @@ class TestAccountService(TestCase):
         self.assertEqual(new_account["email"], account.email)
         self.assertEqual(new_account["address"], account.address)
         self.assertEqual(new_account["phone_number"], account.phone_number)
-        self.assertEqual(new_account["date_joined"], str(account.date_joined))
+        self.assertEqual(
+            date.fromisoformat(new_account["date_joined"]),
+            account.date_joined
+        )
 
     def test_bad_request(self):
         """It should not Create an Account when sending the wrong data"""
@@ -146,7 +149,10 @@ class TestAccountService(TestCase):
         self.assertEqual(data["email"], account.email)
         self.assertEqual(data["address"], account.address)
         self.assertEqual(data["phone_number"], account.phone_number)
-        self.assertEqual(str(data["date_joined"]), str(account.date_joined))
+        self.assertEqual(
+            date.fromisoformat(data["date_joined"]),
+            account.date_joined
+        )
 
     def test_read_nonexisting_account(self):
         """It should fail to read a non-existing Account"""
