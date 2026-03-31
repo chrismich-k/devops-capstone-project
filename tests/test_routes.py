@@ -244,7 +244,7 @@ class TestAccountService(TestCase):
         # these should be different:
         self.assertNotEqual(data_returned["name"], data_original["name"])
         self.assertNotEqual(data_returned["email"], data_original["email"])
-        
+
         # these should be the same:
         self.assertEqual(data_returned["address"], data_original["address"])
         self.assertEqual(
@@ -264,3 +264,27 @@ class TestAccountService(TestCase):
             json=test_account.serialize()
         )
         self.assertEqual(response.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_delete_account(self):
+        """It should delete an Account"""
+        # create 5 test accounts, select one
+        account = random.choice(self._create_accounts(5))
+
+        # delete the account and check status
+        resp_returned = self.client.delete(
+            BASE_URL + f"/{str(account.id)}"
+        )
+        self.assertEqual(resp_returned.status_code, status.HTTP_204_NO_CONTENT)
+
+        # try to read the account just deleted
+        response_read = self.client.get(
+            BASE_URL + f"/{str(account.id)}"
+        )
+        self.assertEqual(response_read.status_code, status.HTTP_404_NOT_FOUND)
+
+    def test_delete_nonexisting_account(self):
+        """It should return NO_CONTENT when deleting a non-existing Account"""
+        resp_returned = self.client.delete(
+            BASE_URL + "/123"
+        )
+        self.assertEqual(resp_returned.status_code, status.HTTP_204_NO_CONTENT)
